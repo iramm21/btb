@@ -1,0 +1,167 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String     @id
+  profile  Profile?
+  betSlips BetSlip[]
+}
+
+model Profile {
+  id          String  @id
+  user        User    @relation(fields: [id], references: [id])
+  nickname    String?
+  favTeamId   Int?
+  riskProfile String?
+  favTeam     Team?   @relation(fields: [favTeamId], references: [id])
+}
+
+model Team {
+  id           Int       @id
+  name         String
+  shortName    String
+  colors       String?
+  logoUrl      String?
+  players      Player[]
+  homeFixtures Fixture[] @relation("HomeTeam")
+  awayFixtures Fixture[] @relation("AwayTeam")
+  lineups      Lineup[]
+}
+
+model Player {
+  id        Int     @id
+  teamId    Int?
+  team      Team?   @relation(fields: [teamId], references: [id])
+  name      String
+  position  String?
+  isActive  Boolean @default(true)
+  statsJson Json?
+  injuries  Injury[]
+
+  @@index([isActive])
+}
+
+model Fixture {
+  id           Int        @id
+  season       Int?
+  round        Int?
+  kickoffUtc   DateTime
+  homeTeamId   Int
+  awayTeamId   Int
+  venue        String?
+  status       String?
+  homeTeam     Team       @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam     Team       @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  lineups      Lineup[]
+  oddsSnapshots OddsSnapshot[]
+  tips         Tip[]
+  betSlips     BetSlip[]
+
+  @@index([round, kickoffUtc])
+}
+
+model Lineup {
+  id           Int       @id @default(autoincrement())
+  fixtureId    Int
+  teamId       Int
+  confirmedAt  DateTime?
+  startersJson Json?
+  benchJson    Json?
+  outsJson     Json?
+  fixture      Fixture   @relation(fields: [fixtureId], references: [id])
+  team         Team      @relation(fields: [teamId], references: [id])
+
+  @@unique([fixtureId, teamId])
+}
+
+model Injury {
+  id        Int      @id @default(autoincrement())
+  playerId  Int
+  status    String
+  note      String?
+  updatedAt DateTime
+  player    Player   @relation(fields: [playerId], references: [id])
+}
+
+model OddsSnapshot {
+  id                   Int      @id @default(autoincrement())
+  fixtureId            Int
+  capturedAt           DateTime
+  homeWin              Float?
+  awayWin              Float?
+  line                 Float?
+  total                Float?
+  anytimeTryscorerJson Json?
+  fixture              Fixture  @relation(fields: [fixtureId], references: [id])
+
+  @@index([fixtureId, capturedAt])
+}
+
+model Tip {
+  id          Int      @id @default(autoincrement())
+  fixtureId   Int
+  strategy    String
+  riskBand    String
+  payloadJson Json?
+  score       Float?
+  fixture     Fixture @relation(fields: [fixtureId], references: [id])
+}
+
+model BetSlip {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  fixtureId  Int
+  legsJson   Json
+  riskBand   String?
+  createdAt  DateTime @default(now())
+  note       String?
+  user       User     @relation(fields: [userId], references: [id])
+  fixture    Fixture  @relation(fields: [fixtureId], references: [id])
+  outcomes   BetOutcome[]
+
+  @@index([userId])
+  @@index([fixtureId])
+}
+
+model BetOutcome {
+  id        Int      @id @default(autoincrement())
+  betSlipId Int
+  stake     Float
+  returned  Float?
+  status    String?
+  settledAt DateTime?
+  betSlip   BetSlip  @relation(fields: [betSlipId], references: [id])
+}
+
+model IngestRun {
+  id         Int      @id @default(autoincrement())
+  type       String
+  startedAt  DateTime @default(now())
+  finishedAt DateTime?
+  status     String?
+  error      String?
+}
+
+model FeatureFlag {
+  id         Int    @id @default(autoincrement())
+  key        String @unique
+  enabled    Boolean @default(false)
+  payloadJson Json?
+}
+
+model AuditLog {
+  id     Int      @id @default(autoincrement())
+  actor  String?
+  action String
+  entity String?
+  before Json?
+  after  Json?
+  at     DateTime @default(now())
+}
+
