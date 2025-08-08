@@ -13,3 +13,7 @@
 - Added tiny seed scripts for NRL teams and fixtures with idempotent upserts.
 - Introduced a Prisma client singleton and repository helpers for fixtures, lineups, odds, and ingest runs.
 - Created a basic repository test seeding an in-memory SQLite db.
+
+## Phase 3 notes
+- Implemented fixtures, lineups, and weather API routes with Zod validation and mocked weather data.
+- Added shared API schemas and Supertest-based API tests covering success and validation errors.
