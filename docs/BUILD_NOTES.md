@@ -8,3 +8,8 @@
 - Added initial Prisma schema using SQLite for development.
 - Defined models for users, profiles, teams, players, fixtures, lineups, injuries, odds snapshots, tips, bet slips, bet outcomes, ingest runs, feature flags, and audit logs.
 - Included JSON columns and basic indexes to support early queries.
+
+## Phase 2 notes
+- Added tiny seed scripts for NRL teams and fixtures with idempotent upserts.
+- Introduced a Prisma client singleton and repository helpers for fixtures, lineups, odds, and ingest runs.
+- Created a basic repository test seeding an in-memory SQLite db.
