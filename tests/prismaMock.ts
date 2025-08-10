@@ -78,9 +78,12 @@ export class PrismaClient {
   };
   oddsSnapshot = {
     findFirst: async ({ where }: any) => {
-      const res = db.oddsSnapshots
-        .filter((o) => o.fixtureId === where.fixtureId)
-        .sort((a, b) => new Date(b.capturedAt).getTime() - new Date(a.capturedAt).getTime());
+      let res = db.oddsSnapshots.filter((o) => o.fixtureId === where.fixtureId);
+      if (where.capturedAt) {
+        const t = new Date(where.capturedAt).getTime();
+        res = res.filter((o) => new Date(o.capturedAt).getTime() === t);
+      }
+      res = res.sort((a, b) => new Date(b.capturedAt).getTime() - new Date(a.capturedAt).getTime());
       return res[0] ?? null;
     },
     update: async ({ where, data }: any) => {
