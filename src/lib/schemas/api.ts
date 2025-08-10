@@ -63,6 +63,35 @@ export const WeatherResponseSchema = z.object({
   source: z.literal('mock'),
 });
 
+export const TipsQuerySchema = z.object({
+  fixture_id: z.string().min(1),
+  risk: z.enum(['safe', 'balanced', 'spicy']).default('balanced').optional(),
+  exclude: z.string().optional(),
+  seed: z.string().optional(),
+});
+
+export const TipLegSchema = z.object({
+  market: z.enum([
+    'match_line',
+    'total_points',
+    'anytime_tryscorer',
+    'first_half_result',
+    'alt_total_points',
+    'first_tryscorer',
+  ]),
+  selection: z.string(),
+  price: z.number(),
+  confidence: z.number(),
+  rationale: z.string(),
+});
+
+export const TipsResponseSchema = z.object({
+  fixture_id: z.string(),
+  risk: z.enum(['safe', 'balanced', 'spicy']),
+  legs: z.array(TipLegSchema),
+});
+
 export type FixturesResponse = z.infer<typeof FixturesResponseSchema>;
 export type LineupsResponse = z.infer<typeof LineupsResponseSchema>;
 export type WeatherResponse = z.infer<typeof WeatherResponseSchema>;
+export type TipsResponse = z.infer<typeof TipsResponseSchema>;

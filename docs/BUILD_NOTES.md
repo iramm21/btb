@@ -21,3 +21,8 @@
 ## Phase 4 notes
 - Added admin odds CSV upload endpoint with header auth, CSV parsing, zod validation, and upsert logic.
 - Covered upload behavior with Supertest-based API tests for auth, validation errors, and idempotent re-uploads.
+
+## Phase 5 notes
+- Implemented deterministic rule-based tip engine with seeded RNG, risk bands, and weather adjustments.
+- Exposed `/api/tips` with zod query validation returning composed legs and confidence scores.
+- Added unit and API tests for tip engine determinism, weather effects, exclusions, and confidence bounds.
