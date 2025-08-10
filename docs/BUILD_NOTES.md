@@ -17,3 +17,7 @@
 ## Phase 3 notes
 - Implemented fixtures, lineups, and weather API routes with Zod validation and mocked weather data.
 - Added shared API schemas and Supertest-based API tests covering success and validation errors.
+
+## Phase 4 notes
+- Added admin odds CSV upload endpoint with header auth, CSV parsing, zod validation, and upsert logic.
+- Covered upload behavior with Supertest-based API tests for auth, validation errors, and idempotent re-uploads.
