@@ -6,6 +6,8 @@ declare module '@prisma/client' {
     lineup: any;
     oddsSnapshot: any;
     ingestRun: any;
+    user: any;
+    profile: any;
     $disconnect(): Promise<void>;
   }
 }

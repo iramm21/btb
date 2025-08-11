@@ -5,12 +5,45 @@ export const db = {
   lineups: [] as any[],
   oddsSnapshots: [] as any[],
   ingestRuns: [] as any[],
+  users: [] as any[],
+  profiles: [] as any[],
 };
 
 let oddsId = 1;
 let ingestId = 1;
 
 export class PrismaClient {
+  user = {
+    upsert: async ({ where, create }: any) => {
+      const existing = db.users.find((u) => u.id === where.id);
+      if (existing) return existing;
+      db.users.push(create);
+      return create;
+    },
+  };
+  profile = {
+    findUnique: async ({ where, include }: any) => {
+      const p = db.profiles.find((pr) => pr.id === where.id);
+      if (!p) return null;
+      if (include?.favTeam) {
+        return { ...p, favTeam: db.teams.find((t) => t.id === p.favTeamId) };
+      }
+      return p;
+    },
+    upsert: async ({ where, create, update, include }: any) => {
+      let p = db.profiles.find((pr) => pr.id === where.id);
+      if (p) {
+        Object.assign(p, update);
+      } else {
+        p = create;
+        db.profiles.push(p);
+      }
+      if (include?.favTeam) {
+        return { ...p, favTeam: db.teams.find((t) => t.id === p.favTeamId) };
+      }
+      return p;
+    },
+  };
   team = {
     upsert: async ({ where, create, update }: any) => {
       const existing = db.teams.find((t) => t.id === where.id);
