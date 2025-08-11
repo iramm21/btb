@@ -16,8 +16,14 @@ function Footer() {
     <footer className="p-4 border-t text-sm text-center">
       <p>
         &copy; {new Date().getFullYear()} Beat the Bet ·{' '}
+        <Link href="/legal/terms" className="underline">
+          Terms
+        </Link>{' '}·{' '}
+        <Link href="/legal/privacy" className="underline">
+          Privacy
+        </Link>{' '}·{' '}
         <Link href="/legal/responsible-gambling" className="underline">
-          Gamble responsibly
+          Responsible Gambling
         </Link>
       </p>
     </footer>
