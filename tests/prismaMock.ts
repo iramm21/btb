@@ -10,6 +10,7 @@ export const db = {
   profiles: [] as any[],
   betSlips: [] as any[],
   betOutcomes: [] as any[],
+  events: [] as any[],
 };
 
 let oddsId = 1;
@@ -208,6 +209,24 @@ export class PrismaClient {
       if (!o) return null;
       Object.assign(o, data);
       return o;
+    },
+  };
+  event = {
+    create: async ({ data }: any) => {
+      const obj = { id: String(db.events.length + 1), createdAt: new Date(), ...data };
+      db.events.push(obj);
+      return obj;
+    },
+    findMany: async ({ where, orderBy, take }: any) => {
+      let res = db.events.slice();
+      if (where?.userId) {
+        res = res.filter((e) => e.userId === where.userId);
+      }
+      if (orderBy?.createdAt === 'desc') {
+        res = res.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      }
+      if (take) res = res.slice(0, take);
+      return res;
     },
   };
   $disconnect = async () => {};
