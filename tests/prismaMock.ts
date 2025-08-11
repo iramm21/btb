@@ -5,6 +5,7 @@ export const db = {
   lineups: [] as any[],
   oddsSnapshots: [] as any[],
   ingestRuns: [] as any[],
+  featureFlags: [] as any[],
   users: [] as any[],
   profiles: [] as any[],
   betSlips: [] as any[],
@@ -144,6 +145,19 @@ export class PrismaClient {
         .slice()
         .sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime())
         .slice(0, take);
+    },
+  };
+  featureFlag = {
+    findMany: async () => db.featureFlags.slice(),
+    upsert: async ({ where, update, create }: any) => {
+      let f = db.featureFlags.find((fl) => fl.key === where.key);
+      if (f) {
+        Object.assign(f, update);
+      } else {
+        f = { id: db.featureFlags.length + 1, ...create };
+        db.featureFlags.push(f);
+      }
+      return f;
     },
   };
   betSlip = {

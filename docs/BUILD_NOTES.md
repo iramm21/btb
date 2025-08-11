@@ -53,3 +53,8 @@
 - Slips are saved via a server action from the Builder, stored against the signed-in user.
 - ROI formula: `(returnSum - stakeSum) / stakeSum` (pending slips ignored).
 - In CI, `getSession()` returns a mock user ensuring auth-dependent tests run offline.
+
+## Admin Console
+- Admin rights are checked via `assertAdmin()`. In tests or when `ADMIN_MODE=mock`, the `test-user` is treated as admin; otherwise a simple `ADMIN_USER_IDS` allowlist is used.
+- Odds CSVs are uploaded through a server action that validates a small file and parses rows with zod before upserting into `odds_snapshots`.
+- Feature flags live in the `FeatureFlag` table and can be toggled or given JSON payloads from the admin console.
