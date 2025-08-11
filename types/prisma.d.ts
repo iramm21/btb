@@ -11,6 +11,7 @@ declare module '@prisma/client' {
     profile: any;
     betSlip: any;
     betOutcome: any;
+    event: any;
     $disconnect(): Promise<void>;
   }
 }

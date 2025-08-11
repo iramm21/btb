@@ -9,6 +9,7 @@ import type { TipLeg } from '../../../features/tips/engine';
 import { formatSlip, copyToClipboard } from '../../../features/tips/format';
 import type { TipsResponse } from '../../../lib/schemas/api';
 import { saveSlipAction } from '../../my-bets/actions';
+import { logEvent } from '../../../lib/clientAnalytics';
 import Link from 'next/link';
 
 interface Props {
@@ -52,10 +53,15 @@ export default function BetBuilderClient({ fixtureId }: Props) {
     loadTips();
   }, [loadTips]);
 
+  useEffect(() => {
+    logEvent('builder_open', { fixtureId, risk });
+  }, [fixtureId]);
+
   const handleCopy = async () => {
     const text = formatSlip({ fixtureId, risk, legs });
     const ok = await copyToClipboard(text);
     setCopied(ok);
+    if (ok) logEvent('copy_slip', { fixtureId, risk, legsCount: legs.length });
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -68,6 +74,7 @@ export default function BetBuilderClient({ fixtureId }: Props) {
       try {
         await saveSlipAction(formData);
         setSaved(true);
+        logEvent('save_slip', { fixtureId, risk, legsCount: legs.length });
       } catch {
         setError('Unable to save slip.');
       }

@@ -54,6 +54,11 @@
 - ROI formula: `(returnSum - stakeSum) / stakeSum` (pending slips ignored).
 - In CI, `getSession()` returns a mock user ensuring auth-dependent tests run offline.
 
+## Analytics
+- Added server-side `Event` table logging `builder_open`, `copy_slip`, and `save_slip` events.
+- Bet Builder triggers these events via a server action.
+- `propsJson` stores small payloads without PII; `userId` is optional.
+
 ## Admin Console
 - Admin rights are checked via `assertAdmin()`. In tests or when `ADMIN_MODE=mock`, the `test-user` is treated as admin; otherwise a simple `ADMIN_USER_IDS` allowlist is used.
 - Odds CSVs are uploaded through a server action that validates a small file and parses rows with zod before upserting into `odds_snapshots`.

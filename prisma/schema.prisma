@@ -165,3 +165,14 @@ model AuditLog {
   at     DateTime @default(now())
 }
 
+model Event {
+  id        String   @id @default(cuid())
+  userId    String?
+  event     String
+  propsJson Json
+  createdAt DateTime @default(now())
+
+  @@index([event, createdAt])
+  @@index([userId, createdAt])
+}
+
