@@ -7,6 +7,8 @@ export const db = {
   ingestRuns: [] as any[],
   users: [] as any[],
   profiles: [] as any[],
+  betSlips: [] as any[],
+  betOutcomes: [] as any[],
 };
 
 let oddsId = 1;
@@ -142,6 +144,56 @@ export class PrismaClient {
         .slice()
         .sort((a, b) => b.startedAt.getTime() - a.startedAt.getTime())
         .slice(0, take);
+    },
+  };
+  betSlip = {
+    create: async ({ data }: any) => {
+      const obj = { id: db.betSlips.length + 1, createdAt: new Date(), ...data };
+      db.betSlips.push(obj);
+      return obj;
+    },
+    findMany: async ({ where, include, orderBy, take }: any) => {
+      let res = db.betSlips.filter((s) => s.userId === where.userId);
+      if (orderBy?.createdAt === 'desc') {
+        res = res.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+      }
+      if (take) res = res.slice(0, take);
+      return res.map((s) => {
+        const slip: any = { ...s };
+        if (include?.outcomes) {
+          slip.outcomes = db.betOutcomes.filter((o) => o.betSlipId === s.id);
+        }
+        if (include?.fixture) {
+          const f = db.fixtures.find((f) => f.id === s.fixtureId);
+          if (f) {
+            const fixture: any = { ...f };
+            if (include.fixture.include?.homeTeam) {
+              fixture.homeTeam = db.teams.find((t) => t.id === f.homeTeamId);
+            }
+            if (include.fixture.include?.awayTeam) {
+              fixture.awayTeam = db.teams.find((t) => t.id === f.awayTeamId);
+            }
+            slip.fixture = fixture;
+          }
+        }
+        return slip;
+      });
+    },
+  };
+  betOutcome = {
+    findFirst: async ({ where }: any) => {
+      return db.betOutcomes.find((o) => o.betSlipId === where.betSlipId) ?? null;
+    },
+    create: async ({ data }: any) => {
+      const obj = { id: db.betOutcomes.length + 1, ...data };
+      db.betOutcomes.push(obj);
+      return obj;
+    },
+    update: async ({ where, data }: any) => {
+      const o = db.betOutcomes.find((oc) => oc.id === where.id);
+      if (!o) return null;
+      Object.assign(o, data);
+      return o;
     },
   };
   $disconnect = async () => {};

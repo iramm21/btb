@@ -8,6 +8,8 @@ declare module '@prisma/client' {
     ingestRun: any;
     user: any;
     profile: any;
+    betSlip: any;
+    betOutcome: any;
     $disconnect(): Promise<void>;
   }
 }
