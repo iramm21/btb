@@ -43,3 +43,6 @@
 - Login and logout routes use Supabase in real envs and are bypassed in mock mode. Protected routes now include `/dashboard`, `/match/:id`, `/builder/:id`, `/my-bets`, and `/admin`.
 - Added a Settings page letting users set an optional nickname, favourite team, and risk profile.
 - Real auth requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `AUTH_MODE` env vars.
+## Phase 9 notes
+- Introduced Bet Builder page with risk slider, market exclusions, and suggestion list backed by `/api/tips`.
+- Users can copy a bookie-style slip using a new formatter utility.
