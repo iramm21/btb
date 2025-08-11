@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useTransition } from 'react';
 import RiskSlider from '../../../components/builder/RiskSlider';
 import Exclusions from '../../../components/builder/Exclusions';
 import LegCard from '../../../components/builder/LegCard';
@@ -8,6 +8,8 @@ import { Market, RiskBand } from '../../../features/tips/constants';
 import type { TipLeg } from '../../../features/tips/engine';
 import { formatSlip, copyToClipboard } from '../../../features/tips/format';
 import type { TipsResponse } from '../../../lib/schemas/api';
+import { saveSlipAction } from '../../my-bets/actions';
+import Link from 'next/link';
 
 interface Props {
   fixtureId: string;
@@ -20,6 +22,8 @@ export default function BetBuilderClient({ fixtureId }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const loadTips = useCallback(async () => {
     setLoading(true);
@@ -53,6 +57,21 @@ export default function BetBuilderClient({ fixtureId }: Props) {
     const ok = await copyToClipboard(text);
     setCopied(ok);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleSave = () => {
+    const formData = new FormData();
+    formData.append('fixtureId', fixtureId);
+    formData.append('risk_band', risk);
+    formData.append('legs', JSON.stringify(legs));
+    startTransition(async () => {
+      try {
+        await saveSlipAction(formData);
+        setSaved(true);
+      } catch {
+        setError('Unable to save slip.');
+      }
+    });
   };
 
   return (
@@ -96,6 +115,18 @@ export default function BetBuilderClient({ fixtureId }: Props) {
           Copy Slip
         </button>
         {copied && <span className="ml-2 text-sm">Copied!</span>}
+        <button
+          className="ml-2 px-4 py-2 border rounded"
+          onClick={handleSave}
+          disabled={!legs.length || isPending}
+        >
+          Save Slip
+        </button>
+        {saved && (
+          <span className="ml-2 text-sm">
+            Saved! <Link href="/my-bets" className="underline">My Bets</Link>
+          </span>
+        )}
       </div>
     </div>
   );

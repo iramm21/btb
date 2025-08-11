@@ -46,3 +46,10 @@
 ## Phase 9 notes
 - Introduced Bet Builder page with risk slider, market exclusions, and suggestion list backed by `/api/tips`.
 - Users can copy a bookie-style slip using a new formatter utility.
+- Bet slips can now be saved and reviewed under My Bets.
+
+## Phase 10 notes
+- Added My Bets page with ROI summary and inline outcome editing.
+- Slips are saved via a server action from the Builder, stored against the signed-in user.
+- ROI formula: `(returnSum - stakeSum) / stakeSum` (pending slips ignored).
+- In CI, `getSession()` returns a mock user ensuring auth-dependent tests run offline.
