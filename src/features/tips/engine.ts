@@ -91,7 +91,7 @@ export async function buildTips({
   const lineups = await getLineupsByFixture(id);
   const odds = await getLatestOddsSnapshot(id); // optional, may be null
   const weather = mockWeather(seed, id);
-  const confirmed = lineups.every((l) => l.confirmedAt);
+  const confirmed = lineups.every((l: any) => l.confirmedAt);
 
   const rules = RISK_RULES[risk];
   const legs: TipLeg[] = [];
@@ -153,9 +153,9 @@ export async function buildTips({
 
   // Any time tryscorers
   if (!exclude.includes(Market.AnytimeTryscorer)) {
-    const starters = lineups.flatMap((l) => (Array.isArray(l.startersJson) ? l.startersJson : []));
+    const starters = lineups.flatMap((l: any) => (Array.isArray(l.startersJson) ? l.startersJson : []));
     const outs = new Set(
-      lineups.flatMap((l) => (Array.isArray(l.outsJson) ? l.outsJson : [])).map((p: any) => p.id),
+      lineups.flatMap((l: any) => (Array.isArray(l.outsJson) ? l.outsJson : [])).map((p: any) => p.id),
     );
     const candidates = starters.filter((p: any) => !outs.has(p.id));
     // shuffle deterministically
