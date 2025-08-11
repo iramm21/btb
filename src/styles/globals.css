@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-primary: oklch(62% 0.17 260);
+  --color-secondary: oklch(70% 0.12 145);
+  --color-accent: oklch(78% 0.13 35);
+  --color-bg: oklch(98% 0 95);
+  --color-fg: oklch(19% 0.03 255);
+  --color-error: oklch(62% 0.21 25);
+  --color-warning: oklch(80% 0.18 85);
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --color-bg: oklch(19% 0.03 255);
+  --color-fg: oklch(98% 0 95);
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+}
