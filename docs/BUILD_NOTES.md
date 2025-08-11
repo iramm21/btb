@@ -38,3 +38,8 @@
 - Odds snapshots sourced from local DB via latest snapshot helper; may be empty until CSV upload.
 - Weather is mocked via internal API; insights derived from weather and odds.
 - TODO: visualise odds movement and add richer insights.
+## Phase 8 notes
+- Wired Supabase Auth with a mock mode for tests and CI. When `NODE_ENV=test` or `AUTH_MODE=mock`, the session helper returns a fixed test user and middleware injects it without network calls.
+- Login and logout routes use Supabase in real envs and are bypassed in mock mode. Protected routes now include `/dashboard`, `/match/:id`, `/builder/:id`, `/my-bets`, and `/admin`.
+- Added a Settings page letting users set an optional nickname, favourite team, and risk profile.
+- Real auth requires `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `AUTH_MODE` env vars.
