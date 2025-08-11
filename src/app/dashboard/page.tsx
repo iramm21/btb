@@ -1,12 +1,13 @@
 import FixtureList from '../../components/fixtures/FixtureList';
 import type { FixturesResponse } from '../../lib/schemas/api';
 
-interface DashboardPageProps {
-  searchParams: { round?: string };
-}
-
-export default async function DashboardPage({ searchParams }: DashboardPageProps) {
-  const round = Number(searchParams.round ?? 1);
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ round?: string }>;
+}) {
+  const params = await searchParams;
+  const round = Number(params.round ?? 1);
   const url = `${process.env.NEXT_PUBLIC_APP_URL ?? ''}/api/fixtures?round=${round}`;
   let fixtures: FixturesResponse['fixtures'] = [];
   let error: string | null = null;

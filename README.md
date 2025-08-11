@@ -238,6 +238,8 @@ CRON_INGEST_SECRET=...
 ---
 
 ## Local setup
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for environment variables and deployment steps.
+
 1. pnpm i (or yarn/npm) — install deps.
 2. Copy .env.local and fill in keys.
 3. pnpm prisma generate && pnpm prisma migrate dev.
@@ -255,6 +257,8 @@ CRON_INGEST_SECRET=...
 ---
 
 ## Deployment
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for full deployment instructions.
+
 - Vercel for frontend/API routes; set env vars and Cron Jobs (or Supabase Scheduler) for ingestion.
 - Supabase for DB/Auth; enable RLS policies and Row Level Security.
 - Backups: daily automated DB backups.

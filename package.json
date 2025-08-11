@@ -10,7 +10,8 @@
     "test": "vitest run --reporter=basic",
     "test:api": "vitest run src/**/*.api.test.ts",
     "test:e2e": "playwright test --grep @smoke",
-    "ci": "pnpm -s lint && pnpm -s tsc && pnpm -s test"
+    "ci": "pnpm -s lint && pnpm -s tsc && pnpm -s test",
+    "postinstall": "PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING=1 prisma generate"
   },
   "devDependencies": {
     "@eslint/js": "^9.32.0",

@@ -11,11 +11,12 @@ const formSchema = z.object({
   risk_profile: z.enum(['safe', 'balanced', 'spicy']),
 });
 
-interface SettingsPageProps {
-  searchParams: { saved?: string };
-}
-
-export default async function SettingsPage({ searchParams }: SettingsPageProps) {
+export default async function SettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const params = await searchParams;
   const { userId } = await getSession();
   if (!userId) {
     redirect('/login');
@@ -43,7 +44,7 @@ export default async function SettingsPage({ searchParams }: SettingsPageProps) 
 
   return (
     <form action={save} className="space-y-4">
-      {searchParams.saved && <p>Profile saved.</p>}
+      {params.saved && <p>Profile saved.</p>}
       <div>
         <label htmlFor="nickname" className="block">
           Nickname
