@@ -26,3 +26,8 @@
 - Implemented deterministic rule-based tip engine with seeded RNG, risk bands, and weather adjustments.
 - Exposed `/api/tips` with zod query validation returning composed legs and confidence scores.
 - Added unit and API tests for tip engine determinism, weather effects, exclusions, and confidence bounds.
+
+## Phase 6 notes
+- Added Next.js App Router layout with header, footer, and light/dark theme toggle.
+- Defined CSS design tokens using OKLCH variables for light and dark themes.
+- Introduced reusable Responsible Gambling banner that shows on bet-building routes.
