@@ -31,3 +31,10 @@
 - Added Next.js App Router layout with header, footer, and light/dark theme toggle.
 - Defined CSS design tokens using OKLCH variables for light and dark themes.
 - Introduced reusable Responsible Gambling banner that shows on bet-building routes.
+
+## Phase 7 notes
+- Added Match Hub with /dashboard round selector and fixture grid.
+- Introduced match detail pages showing odds, lineups, weather, quick insights, and Build My Bet CTA.
+- Odds snapshots sourced from local DB via latest snapshot helper; may be empty until CSV upload.
+- Weather is mocked via internal API; insights derived from weather and odds.
+- TODO: visualise odds movement and add richer insights.
