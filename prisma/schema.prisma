@@ -8,7 +8,7 @@ generator client {
 }
 
 model User {
-  id       String     @id
+  id       String    @id
   profile  Profile?
   betSlips BetSlip[]
 }
@@ -32,15 +32,16 @@ model Team {
   homeFixtures Fixture[] @relation("HomeTeam")
   awayFixtures Fixture[] @relation("AwayTeam")
   lineups      Lineup[]
+  favoritedBy  Profile[]
 }
 
 model Player {
-  id        Int     @id
+  id        Int      @id
   teamId    Int?
-  team      Team?   @relation(fields: [teamId], references: [id])
+  team      Team?    @relation(fields: [teamId], references: [id])
   name      String
   position  String?
-  isActive  Boolean @default(true)
+  isActive  Boolean  @default(true)
   statsJson Json?
   injuries  Injury[]
 
@@ -48,20 +49,20 @@ model Player {
 }
 
 model Fixture {
-  id           Int        @id
-  season       Int?
-  round        Int?
-  kickoffUtc   DateTime
-  homeTeamId   Int
-  awayTeamId   Int
-  venue        String?
-  status       String?
-  homeTeam     Team       @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  awayTeam     Team       @relation("AwayTeam", fields: [awayTeamId], references: [id])
-  lineups      Lineup[]
+  id            Int            @id
+  season        Int?
+  round         Int?
+  kickoffUtc    DateTime
+  homeTeamId    Int
+  awayTeamId    Int
+  venue         String?
+  status        String?
+  homeTeam      Team           @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam      Team           @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  lineups       Lineup[]
   oddsSnapshots OddsSnapshot[]
-  tips         Tip[]
-  betSlips     BetSlip[]
+  tips          Tip[]
+  betSlips      BetSlip[]
 
   @@index([round, kickoffUtc])
 }
@@ -104,7 +105,7 @@ model OddsSnapshot {
 }
 
 model Tip {
-  id          Int      @id @default(autoincrement())
+  id          Int     @id @default(autoincrement())
   fixtureId   Int
   strategy    String
   riskBand    String
@@ -114,44 +115,44 @@ model Tip {
 }
 
 model BetSlip {
-  id         Int      @id @default(autoincrement())
-  userId     String
-  fixtureId  Int
-  legsJson   Json
-  riskBand   String?
-  createdAt  DateTime @default(now())
-  note       String?
-  user       User     @relation(fields: [userId], references: [id])
-  fixture    Fixture  @relation(fields: [fixtureId], references: [id])
-  outcomes   BetOutcome[]
+  id        Int          @id @default(autoincrement())
+  userId    String
+  fixtureId Int
+  legsJson  Json
+  riskBand  String?
+  createdAt DateTime     @default(now())
+  note      String?
+  user      User         @relation(fields: [userId], references: [id])
+  fixture   Fixture      @relation(fields: [fixtureId], references: [id])
+  outcomes  BetOutcome[]
 
   @@index([userId])
   @@index([fixtureId])
 }
 
 model BetOutcome {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   betSlipId Int
   stake     Float
   returned  Float?
   status    String?
   settledAt DateTime?
-  betSlip   BetSlip  @relation(fields: [betSlipId], references: [id])
+  betSlip   BetSlip   @relation(fields: [betSlipId], references: [id])
 }
 
 model IngestRun {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   type       String
-  startedAt  DateTime @default(now())
+  startedAt  DateTime  @default(now())
   finishedAt DateTime?
   status     String?
   error      String?
 }
 
 model FeatureFlag {
-  id         Int    @id @default(autoincrement())
-  key        String @unique
-  enabled    Boolean @default(false)
+  id          Int     @id @default(autoincrement())
+  key         String  @unique
+  enabled     Boolean @default(false)
   payloadJson Json?
 }
 
@@ -175,4 +176,3 @@ model Event {
   @@index([event, createdAt])
   @@index([userId, createdAt])
 }
-
