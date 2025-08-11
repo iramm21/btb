@@ -7,13 +7,14 @@ import uploadFromBuffer from '../../features/odds/uploadFromBuffer';
 import { listIngestRuns } from '../../lib/repos/ingest';
 import { listFlags, upsertFlag } from '../../lib/repos/flags';
 
-interface AdminPageProps {
-  searchParams: Record<string, string | string[] | undefined>;
-}
-
-export default async function AdminPage({ searchParams }: AdminPageProps) {
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   await assertAdmin();
-  const tab = (typeof searchParams.tab === 'string' ? searchParams.tab : 'upload').toLowerCase();
+  const params = await searchParams;
+  const tab = (typeof params.tab === 'string' ? params.tab : 'upload').toLowerCase();
 
   async function uploadOdds(formData: FormData) {
     'use server';
@@ -142,10 +143,10 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       </div>
     );
   } else {
-    const inserted = searchParams.inserted;
-    const updated = searchParams.updated;
-    const rows = searchParams.rows;
-    const error = searchParams.error;
+    const inserted = params.inserted;
+    const updated = params.updated;
+    const rows = params.rows;
+    const error = params.error;
     content = (
       <div>
         {error && <p className="text-red-600">{error}</p>}

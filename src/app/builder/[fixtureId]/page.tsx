@@ -1,9 +1,10 @@
 import BetBuilderClient from './BetBuilderClient';
 
-interface BuilderPageProps {
-  params: { fixtureId: string };
-}
-
-export default function BuilderPage({ params }: BuilderPageProps) {
-  return <BetBuilderClient fixtureId={params.fixtureId} />;
+export default async function BuilderPage({
+  params,
+}: {
+  params: Promise<{ fixtureId: string }>;
+}) {
+  const { fixtureId } = await params;
+  return <BetBuilderClient fixtureId={fixtureId} />;
 }

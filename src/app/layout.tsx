@@ -1,11 +1,8 @@
 import '../styles/globals.css';
 import Link from 'next/link';
-import { Inter } from 'next/font/google';
 import { ThemeProvider } from '../components/ThemeProvider';
 import Header from '../components/Header';
 import RGBannerGate from '../components/RGBannerGate';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Beat the Bet'
@@ -33,7 +30,7 @@ function Footer() {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-theme="light">
-      <body className={inter.className}>
+      <body>
         <ThemeProvider>
           <Header />
           <RGBannerGate />

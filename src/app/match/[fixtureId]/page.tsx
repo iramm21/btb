@@ -6,12 +6,13 @@ import { getFixtureById } from '../../../lib/repos/fixtures';
 import { getLatestOddsSnapshot } from '../../../lib/repos/odds';
 import type { LineupsResponse, WeatherResponse } from '../../../lib/schemas/api';
 
-interface MatchPageProps {
-  params: { fixtureId: string };
-}
-
-export default async function MatchPage({ params }: MatchPageProps) {
-  const fixtureId = Number(params.fixtureId);
+export default async function MatchPage({
+  params,
+}: {
+  params: Promise<{ fixtureId: string }>;
+}) {
+  const { fixtureId: fixtureIdStr } = await params;
+  const fixtureId = Number(fixtureIdStr);
   const fixture = await getFixtureById(fixtureId);
   if (!fixture) return <div>Fixture not found.</div>;
 

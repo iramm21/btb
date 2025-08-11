@@ -68,3 +68,7 @@
 - Added concise Terms, Privacy summary, and Responsible Gambling guidance pages plus footer links.
 - RG banner now highlights 18+ usage and information-only disclaimers.
 - Copy is non-binding and pending counsel review and helpline verification.
+
+## Deployment
+- Documented Vercel and Supabase setup including env vars, RLS policies, and secret rotation.
+- Added `.env.example` manifest listing all required configuration keys.
