@@ -8,7 +8,7 @@ export default function RGBanner() {
   return (
     <div className="bg-[var(--color-warning)] text-black px-4 py-2 text-sm flex justify-between" role="region" aria-label="responsible gambling">
       <span>
-        Gamble responsibly.{' '}
+        18+ only. Information only, no guarantees. Gamble responsibly.{` `}
         <Link href="/legal/responsible-gambling" className="underline">
           Learn more
         </Link>

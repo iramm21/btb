@@ -58,3 +58,8 @@
 - Admin rights are checked via `assertAdmin()`. In tests or when `ADMIN_MODE=mock`, the `test-user` is treated as admin; otherwise a simple `ADMIN_USER_IDS` allowlist is used.
 - Odds CSVs are uploaded through a server action that validates a small file and parses rows with zod before upserting into `odds_snapshots`.
 - Feature flags live in the `FeatureFlag` table and can be toggled or given JSON payloads from the admin console.
+
+## Legal & RG notes
+- Added concise Terms, Privacy summary, and Responsible Gambling guidance pages plus footer links.
+- RG banner now highlights 18+ usage and information-only disclaimers.
+- Copy is non-binding and pending counsel review and helpline verification.
